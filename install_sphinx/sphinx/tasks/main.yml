@@ -1,0 +1,38 @@
+---
+- name: SetUp epel repo
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - epel-release
+    - make
+    - gcc
+
+- name: update repositories
+  yum:
+    name: "*"
+    state: latest
+
+- name: Install pip
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python-pip
+    - python-devel
+
+- name: Upgrade pip
+  shell: /bin/bash -lc "pip install --upgrade pip"
+#  register: result
+#  changed_when: ‘”Requirement already up-to-date” not in result.stdout’
+
+- name: Install Sphinx 
+  shell: /bin/bash -lc "pip install --upgrade {{item}}"
+#  register: result
+  with_items:
+    - sphinx
+    - sphinx-autobuild
+    - recommonmark
+    - sphinx_rtd_theme
+#  changed_when: ‘”Requirement already up-to-date” not in result.stdout
+
